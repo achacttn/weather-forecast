@@ -1,0 +1,14 @@
+.WrapperContainer {
+    background-color: grey;
+    max-width: 975px;
+    height: 100%;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+
+.WrapperContent {
+    width: 100%;
+    height: 100%;
+    /* border: 2px solid red; */
+}

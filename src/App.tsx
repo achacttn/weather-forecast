@@ -1,26 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import style from './App.module.css';
+import Wrapper from './components/layout/Wrapper';
+import UserPrompt from './components/UserPrompt';
+import Forecast from './components/Forecast';
 
-function App() {
+const App = () => {
+  const [locationInput, setLocationInput] = React.useState<string>("");
+  const [locationInputSubmitted, setLocationInputSubmitted] = React.useState<boolean>(false);
+
+  const submissionHandler: (locationInput: string) => void = locationInput => {
+    setLocationInput(locationInput);
+    setLocationInputSubmitted(true);
+  }
+
+  React.useEffect(() => {
+    console.log('=== App.tsx ===');
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Wrapper>
+      <div className={style.AppContainer}>
+        {locationInputSubmitted ? <Forecast location={locationInput}/> : <UserPrompt submissionHandler={submissionHandler}/>}
+      </div>
+    </Wrapper>
   );
-}
+};
 
 export default App;
