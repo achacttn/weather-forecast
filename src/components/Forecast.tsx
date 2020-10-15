@@ -2,16 +2,16 @@ import React from 'react';
 import style from './Forecast.module.css';
 
 type ForecastProps = {
-    location: string;
+    WOEID: number;
 }
 
-const Forecast: React.FC<ForecastProps> = ({ location }) => {
+const Forecast: React.FC<ForecastProps> = ({ WOEID }) => {
     // /api/location/search/?lattlong=(latt),(long)
     // /api/location/search/?query=(query)
 
     const requestHandler: () => void = async () => {
         try {
-            let weatherRequest = await fetch(`https://metaweather.com/api/location/search/?query=${location}`, {
+            let weatherRequest = await fetch(`https://metaweather.com/api/location/search/?query=${WOEID}`, {
             // let weatherRequest = await fetch('https://www.metaweather.com/api/location/2487956/', {
                 headers: {
                     'Content-type': 'application/json',
@@ -27,12 +27,16 @@ const Forecast: React.FC<ForecastProps> = ({ location }) => {
     }
 
     React.useEffect(() => {
-        console.log('Forecast.tsx received location: ', location);
+        console.log('Forecast.tsx received location: ', WOEID);
     });
 
-    React.useEffect(() => {
-        requestHandler();
-    });
+    // React.useEffect(() => {
+    //     requestHandler();
+    // });
+
+    React.useEffect(()=>{
+
+    })
 
     return (
         <div className={style.ForecastContainer}>

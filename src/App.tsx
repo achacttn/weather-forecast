@@ -4,13 +4,25 @@ import Wrapper from './components/layout/Wrapper';
 import UserPrompt from './components/UserPrompt';
 import Forecast from './components/Forecast';
 
-const App = () => {
-  const [locationInput, setLocationInput] = React.useState<string>("");
-  const [locationInputSubmitted, setLocationInputSubmitted] = React.useState<boolean>(false);
+type MetaweatherLocationObject = {
+  latt_long: string;
+  location_type: string;
+  title: string;
+  woeid: number;
+}
 
-  const submissionHandler: (locationInput: string) => void = locationInput => {
-    setLocationInput(locationInput);
-    setLocationInputSubmitted(true);
+const App = () => {
+  // const [locationInput, setLocationInput] = React.useState<string>("");
+  // const [locationInputSubmitted, setLocationInputSubmitted] = React.useState<boolean>(false);
+
+  const [MLObject, setMLObject]           = React.useState<MetaweatherLocationObject>();
+  const [WOEID, setWOEID]                 = React.useState<number>(0);
+  const [resolvedWOEID, setResolvedWOEID] = React.useState<boolean>(false);
+
+  const inputHandler: (MLInput: MetaweatherLocationObject) => void = MLInput => {
+    setMLObject(MLInput);
+    // setWOEID(WOEIDInput);
+    setResolvedWOEID(true);
   }
 
   React.useEffect(() => {
@@ -20,7 +32,7 @@ const App = () => {
   return (
     <Wrapper>
       <div className={style.AppContainer}>
-        {locationInputSubmitted ? <Forecast location={locationInput}/> : <UserPrompt submissionHandler={submissionHandler}/>}
+        {resolvedWOEID ? <Forecast WOEID={WOEID}/> : <UserPrompt inputHandler={inputHandler}/>}
       </div>
     </Wrapper>
   );
