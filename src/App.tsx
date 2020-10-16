@@ -15,7 +15,7 @@ const App = () => {
   // const [locationInput, setLocationInput] = React.useState<string>("");
   // const [locationInputSubmitted, setLocationInputSubmitted] = React.useState<boolean>(false);
 
-  const [MLObject, setMLObject]           = React.useState<MetaweatherLocationObject>();
+  const [MLObject, setMLObject]                 = React.useState<MetaweatherLocationObject>();
   const [resolvedMLObject, setResolvedMLObject] = React.useState<boolean>(false);
 
   const inputHandler: (MLInput: MetaweatherLocationObject) => void = MLInput => {
