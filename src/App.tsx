@@ -16,13 +16,12 @@ const App = () => {
   // const [locationInputSubmitted, setLocationInputSubmitted] = React.useState<boolean>(false);
 
   const [MLObject, setMLObject]           = React.useState<MetaweatherLocationObject>();
-  const [WOEID, setWOEID]                 = React.useState<number>(0);
-  const [resolvedWOEID, setResolvedWOEID] = React.useState<boolean>(false);
+  const [resolvedMLObject, setResolvedMLObject] = React.useState<boolean>(false);
 
   const inputHandler: (MLInput: MetaweatherLocationObject) => void = MLInput => {
     setMLObject(MLInput);
     // setWOEID(WOEIDInput);
-    setResolvedWOEID(true);
+    setResolvedMLObject(true);
   }
 
   React.useEffect(() => {
@@ -32,7 +31,7 @@ const App = () => {
   return (
     <Wrapper>
       <div className={style.AppContainer}>
-        {resolvedWOEID ? <Forecast WOEID={WOEID}/> : <UserPrompt inputHandler={inputHandler}/>}
+        {resolvedMLObject ? <Forecast MLObject={MLObject}/> : <UserPrompt inputHandler={inputHandler}/>}
       </div>
     </Wrapper>
   );

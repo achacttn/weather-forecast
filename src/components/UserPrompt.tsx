@@ -12,13 +12,13 @@ type UserPromptProps = {
     inputHandler: (MLInput: MetaweatherLocationObject) => void
 }
 
-
 const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
 
     const inputRef                          = React.useRef<HTMLInputElement>(null);
     const [locInput, setLocInput]           = React.useState<string>("");
     const [latInput, setLatInput]           = React.useState<number>(0);
     const [longInput, setLongInput]         = React.useState<number>(0);
+    const [geoResolved, setGeoResolved]     = React.useState<boolean>(false);
     
     const [requireAdditionalInput, setRequireAdditionalInput]   = React.useState<boolean>(false);
     const [possibleLocations, setPossibleLocations]             = React.useState<MetaweatherLocationObject[]>([])
@@ -32,7 +32,7 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
         let locResult = await locRequest.json();
         console.log(locResult);
         if( locResult.length === 1 ){
-            inputHandler(locResult[0].woeid)
+            inputHandler(locResult[0])
         } else {
             setRequireAdditionalInput(true);
             setPossibleLocations(locResult);
@@ -53,19 +53,53 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
         }
     }
     
-    const latlongHandler: () => void = async () => {
+    const latLongHandler: () => void = async () => {
+        console.log('latLongHandler: ', latInput, longInput);
         let latLongRequest = await fetch(`https://96dtnqwxz5.execute-api.ap-southeast-2.amazonaws.com/wf-locationSearch?ll=${latInput},${longInput}`);
         let latLongResult = await latLongRequest.json();
         console.log(latLongResult);
         if( latLongResult.length === 1 ){
-            inputHandler(latLongResult[0].woeid)
+            inputHandler(latLongResult[0])
+        } else {
+            setRequireAdditionalInput(true);
+            setPossibleLocations(latLongResult);
         }
     }
 
-    const getCurrentLocation: () => void = () => {
-        const geo = navigator.geolocation;
-        geo.getCurrentPosition(console.log, console.log);
+    const getCurrentLocation: () => Promise<Position | Geolocation | void> | undefined = () => {
+        if( 'geolocation' in navigator ){
+            return new Promise<Position>((resolve, reject)=>{
+                navigator.geolocation.getCurrentPosition(resolve, reject);
+            })
+            .then(position => {
+                let { coords: { latitude, longitude } } = position;
+                setLatInput(latitude);
+                setLongInput(longitude);
+                setGeoResolved(true)
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        }    
     }
+
+    React.useEffect(() => {
+        const geoRequestHandler = async () => {
+            let geoRequest = await fetch(`https://96dtnqwxz5.execute-api.ap-southeast-2.amazonaws.com/wf-locationSearch?ll=${latInput},${longInput}`)
+            let geoResult = await geoRequest.json();
+            if( geoResult.length !== 1 ){
+                inputHandler(geoResult[0])
+            } else {
+                setRequireAdditionalInput(true);
+                setPossibleLocations(geoResult);
+            }
+        }
+        if( geoResolved ){
+            console.log('current lat: ', latInput);
+            console.log('current long: ', longInput);
+            geoRequestHandler();
+        }
+    }, [geoResolved, inputHandler, latInput, longInput]);
 
     const selectionHandler: (MLInput:MetaweatherLocationObject) => void = (MLInput) => {
         inputHandler(MLInput);
@@ -105,7 +139,7 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
                             min={-180}
                             max={180}
                         />
-                        <button className={style.UserPromptSubmitButton} onClick={latlongHandler} disabled={checkValidLatLong() ? false: true}>
+                        <button className={style.UserPromptSubmitButton} onClick={latLongHandler} disabled={checkValidLatLong() ? false: true}>
                             Search by latlong
                         </button>
                         <p>OR</p>
