@@ -38,7 +38,7 @@ const Forecast: React.FC<ForecastProps> = ({ MLObject }) => {
     React.useEffect(() => {
         console.log('=== Forecast.tsx ===');
         if( MLObject ){
-            let { latt_long, location_type, title, woeid } = MLObject;
+            let { title, woeid } = MLObject;
             // console.log({ latt_long, location_type, title, woeid });
             // console.log(typeof woeid);
             weatherHandler(woeid);
