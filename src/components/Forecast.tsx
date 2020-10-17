@@ -36,11 +36,8 @@ const Forecast: React.FC<ForecastProps> = ({ MLObject }) => {
     }
 
     React.useEffect(() => {
-        console.log('=== Forecast.tsx ===');
         if( MLObject ){
             let { title, woeid } = MLObject;
-            // console.log({ latt_long, location_type, title, woeid });
-            // console.log(typeof woeid);
             weatherHandler(woeid);
             setLocationName(title);
 
@@ -49,20 +46,21 @@ const Forecast: React.FC<ForecastProps> = ({ MLObject }) => {
 
     return (
         <div className={style.ForecastContainer}>
-            <p>Forecast!</p>
-            <p>Location: { locationName }</p>
+            <p>Forecast for { locationName }</p>
             {
                 forecastData && forecastData.map( (dataObj, i) => {
                 let { applicable_date, weather_state_name, weather_state_abbr, max_temp, min_temp, wind_speed, wind_direction } = dataObj;
                 return (
-                    <div key={i}>
-                        <p>Date: { applicable_date }</p>
-                        <p>{ weather_state_name }</p>
-                        <img src={`https://www.metaweather.com/static/img/weather/${weather_state_abbr}.svg`} alt=""/>
-                        <p>High: { max_temp }</p>
-                        <p>Low: { min_temp }</p>
-                        <p>Wind speed: { wind_speed }</p>
-                        <p>Wind direction bearing: { wind_direction }</p>
+                    <div key={i} className={style.ForecastBlock}>
+                        <p>{ applicable_date }</p>
+                        <div className={style.WeatherState}>
+                            { weather_state_name }
+                            <img className={style.WeatherSymbol} src={`https://www.metaweather.com/static/img/weather/${weather_state_abbr}.svg`} alt=""/>
+                        </div>
+                        <p>High: {max_temp.toFixed(2)} &deg;C</p>
+                        <p>Low: {min_temp.toFixed(2)} &deg;C</p>
+                        <p>Wind speed: { (1.61*wind_speed).toFixed(2) } km/ph</p>
+                        <p>Wind direction (absolute) bearing: { wind_direction.toFixed(2) }&deg;</p>
                     </div>
                 )
             })

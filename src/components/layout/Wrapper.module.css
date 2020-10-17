@@ -1,5 +1,6 @@
 .WrapperContainer {
-    background-color: grey;
+     background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%); 
     max-width: 975px;
     height: 100%;
     margin: 0 auto;
@@ -10,5 +11,13 @@
 .WrapperContent {
     width: 100%;
     height: 100%;
-    /* border: 2px solid red; */
+    background-color: white;
+    padding: 12px;
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.Title {
+    font-size: 24px;
+    margin: 12px 0px;
 }

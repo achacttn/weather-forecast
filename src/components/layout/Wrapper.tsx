@@ -8,14 +8,10 @@ type WrapperProps = {
 const Wrapper: React.FC<WrapperProps> = ({ children }) => (
     <div className={style.WrapperContainer}>
         <div className={style.WrapperContent}>
-            <h1>Weather widget :)</h1>
+            <h1 className={style.Title}>Weather app :)</h1>
             {children}
         </div>
     </div>
 );
-
-// export type WrapperProps = {
-//     children: React.ReactNode;
-// }
 
 export default Wrapper;

@@ -30,7 +30,6 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
     const locHandler: () => void = async () => {
         let locRequest = await fetch(`https://96dtnqwxz5.execute-api.ap-southeast-2.amazonaws.com/wf-locationSearch?loc=${locInput}`);
         let locResult = await locRequest.json();
-        console.log(locResult);
         if( locResult.length === 1 ){
             inputHandler(locResult[0])
         } else {
@@ -54,10 +53,8 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
     }
     
     const latLongHandler: () => void = async () => {
-        console.log('latLongHandler: ', latInput, longInput);
         let latLongRequest = await fetch(`https://96dtnqwxz5.execute-api.ap-southeast-2.amazonaws.com/wf-locationSearch?ll=${latInput},${longInput}`);
         let latLongResult = await latLongRequest.json();
-        console.log(latLongResult);
         if( latLongResult.length === 1 ){
             inputHandler(latLongResult[0])
         } else {
@@ -95,8 +92,6 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
             }
         }
         if( geoResolved ){
-            console.log('current lat: ', latInput);
-            console.log('current long: ', longInput);
             geoRequestHandler();
         }
     }, [geoResolved, inputHandler, latInput, longInput]);
@@ -112,7 +107,7 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
             <div className={style.UserPromptContent}>
                 { !requireAdditionalInput ?
                     <div className={style.InputPrompt}>
-                        <p>Search a city by name</p>
+                        <p className={style.InputInstruction}>Search a city by name</p>
                         <input
                             type="text"
                             className={style.UserPromptStringInput}
@@ -122,7 +117,7 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
                             placeholder={"e.g. Sydney"}
                         />
                         <button className={style.UserPromptSubmitButton} onClick={locHandler}>Search by name</button>
-                        <p>or latitude/longitude</p>
+                        <p className={style.InputInstruction}>or latitude/longitude</p>
                         <input
                             type="number"
                             className={style.UserPromptLatlongInput}
@@ -142,7 +137,7 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
                         <button className={style.UserPromptSubmitButton} onClick={latLongHandler} disabled={checkValidLatLong() ? false: true}>
                             Search by latlong
                         </button>
-                        <p>OR</p>
+                        <p className={style.InputInstruction}>OR</p>
                         <button className={style.UserPromptGeoButton} onClick={getCurrentLocation}>
                             Use my current location
                         </button>
@@ -153,6 +148,7 @@ const UserPrompt: React.FC<UserPromptProps> = ({ inputHandler }) => {
                             possibleLocations.length !== 0 ?
                             possibleLocations.map( (location, i) => (
                                 <button
+                                    className={style.DecisionPromptButtons}
                                     key={i}
                                     onClick={()=>selectionHandler(location)}>
                                         { location.title }

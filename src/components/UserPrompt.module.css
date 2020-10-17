@@ -1,11 +1,27 @@
 .UserPromptContainer {
-
+    width: 100%;
+    height: 100%;
 }
 
-.UserPromptInput {
-    
+.UserPromptContent {
+    width: 100%;
+    height: 100%;
 }
 
-.UserPromptSubmitButton {
+.InputPrompt, .DecisionPrompt {
+    width: 100%;
+    height: 100%;
+}
 
+.InputInstruction {
+    font-size: 16px;
+    margin: 12px 0px;
+}
+
+input {
+    display: block;
+}
+
+.DecisionPromptButtons {
+    display: block;
 }

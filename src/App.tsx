@@ -12,21 +12,18 @@ type MetaweatherLocationObject = {
 }
 
 const App = () => {
-  // const [locationInput, setLocationInput] = React.useState<string>("");
-  // const [locationInputSubmitted, setLocationInputSubmitted] = React.useState<boolean>(false);
 
+  React.useEffect(()=>{
+    document.title = "Weather Widget";
+  }, []);
+  
   const [MLObject, setMLObject]                 = React.useState<MetaweatherLocationObject>();
   const [resolvedMLObject, setResolvedMLObject] = React.useState<boolean>(false);
 
   const inputHandler: (MLInput: MetaweatherLocationObject) => void = MLInput => {
     setMLObject(MLInput);
-    // setWOEID(WOEIDInput);
     setResolvedMLObject(true);
   }
-
-  React.useEffect(() => {
-    console.log('=== App.tsx ===');
-  });
 
   return (
     <Wrapper>

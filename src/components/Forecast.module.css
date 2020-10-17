@@ -1,0 +1,14 @@
+.ForecastContainer {
+    width: 100%;
+    height: auto;
+    /* overflow-y: scroll; */
+}
+
+.WeatherSymbol {
+    width: 24px;
+    height: 24px;
+}
+
+.ForecastBlock {
+    margin: 24px 0px;
+}
